@@ -1,0 +1,18 @@
+{
+  "name": "hydria",
+  "version": "1.0.1",
+  "main": "hydria.js",
+  "scripts": {},
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "ipfs": "^0.27.7",
+    "y-ipfs-connector": "^2.1.2",
+    "y-map": "^10.1.3",
+    "y-memory": "^8.0.9",
+    "yjs": "^12.3.3"
+  },
+  "devDependencies": {},
+  "description": ""
+}
