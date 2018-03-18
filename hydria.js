@@ -1,11 +1,15 @@
-'use strict';
-
 const IPFS = require('ipfs');
 const CryptoJS = require('crypto-js');
+const uuid = require('uuid');
 const Y = require('yjs');
-require('y-memory')(Y);
-require('y-map')(Y);
-require('y-ipfs-connector')(Y);
+
+const yMem = require('y-memory');
+const yMap = require('y-map');
+const yIpfsConnector = require('y-ipfs-connector');
+
+yMem(Y);
+yMap(Y);
+yIpfsConnector(Y);
 
 module.exports = class Hydria {
   send (state) {
@@ -23,22 +27,25 @@ module.exports = class Hydria {
 
   constructor (secretKey, ipfs) {
     this.secretKey = secretKey;
-    this.ipfs = ipfs !== undefined ? ipfs : new IPFS({
-      EXPERIMENTAL: {
-        pubsub: true,
-        sharding: true,
-        dht: true
-      },
-      config: {
-        Addresses: {
-          Swarm: [
-            '/ip4/0.0.0.0/tcp/0',
-            '/ip4/127.0.0.1/tcp/0/ws',
-            '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-          ]
+    this.ipfs = ipfs !== undefined
+      ? ipfs
+      : new IPFS({
+        EXPERIMENTAL: {
+          pubsub: true,
+          sharding: true,
+          dht: true
+        },
+        repo: `/tmp/hydria/${uuid.v4()}/`,
+        config: {
+          Addresses: {
+            Swarm: [
+              '/ip4/0.0.0.0/tcp/0',
+              '/ip4/127.0.0.1/tcp/0/ws',
+              '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+            ]
+          }
         }
-      }
-    });
+      });
 
     return new Promise((resolve) => {
       this.ipfs.once('ready', () => this.ipfs.id(async (err, info) => {
